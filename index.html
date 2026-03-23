@@ -753,6 +753,187 @@
   }
   .task-animate { animation: taskIn 0.25s ease; }
 
+  /* TRAINING BLOB ICON */
+  .training-blob-icon {
+    width: 20px;
+    height: 20px;
+    transform-origin: center;
+    animation: ringPulse 3s ease-in-out infinite;
+    filter: drop-shadow(0 0 2px rgba(255,255,255,0.18));
+    overflow: visible;
+  }
+
+  .training-blob-icon circle {
+    transform-origin: center;
+  }
+
+  @keyframes ringPulse {
+    0%   { transform: scale(1);    filter: drop-shadow(0 0 1.5px rgba(255,255,255,0.15)); }
+    50%  { transform: scale(1.08); filter: drop-shadow(0 0 4px   rgba(255,255,255,0.32)); }
+    100% { transform: scale(1);    filter: drop-shadow(0 0 1.5px rgba(255,255,255,0.15)); }
+  }
+
+  #nav-training.active .training-blob-icon {
+    animation: ringPulseActive 3s ease-in-out infinite;
+  }
+
+  @keyframes ringPulseActive {
+    0%   { transform: scale(1.06); filter: drop-shadow(0 0 3px rgba(255,255,255,0.4)); }
+    50%  { transform: scale(1.14); filter: drop-shadow(0 0 7px rgba(255,255,255,0.6)); }
+    100% { transform: scale(1.06); filter: drop-shadow(0 0 3px rgba(255,255,255,0.4)); }
+  }
+
+  /* LANGUAGE MODAL OVERLAY */
+  .lang-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(26,26,24,0.45);
+    z-index: 300;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    animation: fadeIn 0.2s ease;
+  }
+  .lang-overlay.open { display: flex; }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+
+  /* MODAL CARD */
+  .lang-modal {
+    background: var(--bg-card);
+    border-radius: var(--radius);
+    padding: 28px 24px 24px;
+    width: 100%;
+    max-width: 420px;
+    box-shadow: 0 16px 48px rgba(26,26,24,0.22);
+    animation: slideUp 0.25s cubic-bezier(0.34,1.56,0.64,1);
+  }
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .lang-modal-title {
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-label);
+    margin-bottom: 18px;
+  }
+
+  /* PROFILE SELECTOR TABS */
+  .profile-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 24px;
+  }
+  .profile-tab {
+    flex: 1;
+    border: none;
+    border-radius: 999px;
+    padding: 11px 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    background: var(--bg-card2);
+    color: var(--text-muted);
+    transition: background 0.15s ease, color 0.15s ease;
+    -webkit-tap-highlight-color: transparent;
+    min-height: 44px;
+  }
+  .profile-tab.active {
+    background: var(--text);
+    color: #fff;
+  }
+  .profile-tab:hover:not(.active) {
+    background: #d8d4cc;
+  }
+
+  /* LANG FIELDS */
+  .lang-field-row {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  .lang-field {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .lang-field-label {
+    font-size: 0.62rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-label);
+  }
+  .lang-select {
+    width: 100%;
+    background: var(--bg-card2);
+    border: none;
+    border-radius: 14px;
+    padding: 13px 16px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--text);
+    outline: none;
+    cursor: pointer;
+    -webkit-appearance: none;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%239a9790' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    padding-right: 36px;
+    min-height: 48px;
+  }
+  .lang-select:focus {
+    background-color: #dedad2;
+    box-shadow: 0 0 0 2px rgba(26,26,24,0.12);
+  }
+
+  /* MODAL CLOSE */
+  .lang-modal-close {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    width: 32px;
+    height: 32px;
+    border: none;
+    border-radius: 999px;
+    background: var(--bg-card2);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-muted);
+    -webkit-tap-highlight-color: transparent;
+  }
+  .lang-modal-close:hover { background: #d8d4cc; }
+  .lang-modal-wrap { position: relative; }
+
+  /* CURRENT PROFILE INDICATOR in header */
+  .profile-indicator {
+    font-size: 0.6rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-label);
+    background: var(--bg-card2);
+    padding: 3px 10px;
+    border-radius: 999px;
+    margin-top: 8px;
+    display: inline-block;
+  }
+
 </style>
 </head>
 <body>
@@ -795,8 +976,8 @@
     </svg>
   </button>
   <button class="nav-btn" id="nav-training" onclick="switchView('training')">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" class="training-blob-icon" overflow="visible">
+      <ellipse cx="12" cy="12" rx="6.6" ry="6.4" transform="rotate(-6 12 12)"/>
     </svg>
   </button>
 </nav>
@@ -806,17 +987,18 @@
 
 <!-- DASHBOARD -->
 <div class="view active" id="view-dashboard">
-  <div class="card">
+  <div class="card" style="padding-top:28px;">
+    <div class="profile-indicator" id="profileIndicator" style="margin-bottom:20px;">Profile 1 · German → Bulgarian</div>
     <div class="field-group">
       <div class="field-header">
-        <span class="field-label">German</span>
+        <span class="field-label" id="label-primary">German</span>
         <span class="field-badge">Required</span>
       </div>
       <input class="field-input" id="input-german" type="text" placeholder="Enter German phrase">
     </div>
     <div class="field-group">
       <div class="field-header">
-        <span class="field-label">Bulgarian</span>
+        <span class="field-label" id="label-target">Bulgarian</span>
         <span class="field-badge">Required</span>
       </div>
       <input class="field-input" id="input-bulgarian" type="text" placeholder="Enter Bulgarian translation">
@@ -830,17 +1012,17 @@
     </div>
     <div class="field-group">
       <div class="field-header">
-        <span class="field-label">Keywords German</span>
+        <span class="field-label" id="label-kw-primary">Keywords German</span>
         <span class="field-badge">Comma separated</span>
       </div>
       <input class="field-input" id="input-kw-de" type="text" placeholder="word1, word2, word3">
     </div>
     <div class="field-group">
       <div class="field-header">
-        <span class="field-label">Keywords Bulgarian</span>
+        <span class="field-label" id="label-kw-target">Keywords Bulgarian</span>
         <span class="field-badge">Comma separated</span>
       </div>
-      <input class="field-input" id="input-kw-bg" type="text" placeholder="дума1, дума2">
+      <input class="field-input" id="input-kw-bg" type="text" placeholder="word1, word2">
     </div>
     <div class="field-group">
       <div class="field-header">
@@ -874,6 +1056,7 @@
       </div>
     </div>
   </div>
+  <button class="btn-primary" style="margin-top:8px;" onclick="openLangModal()">Edit Languages</button>
 </div>
 
 <!-- ARCHIVE -->
@@ -889,17 +1072,126 @@
 
 </div><!-- /viewsWrapper -->
 
+<!-- LANGUAGE MODAL -->
+<div class="lang-overlay" id="langOverlay" onclick="closeLangModalIfBg(event)">
+  <div class="lang-modal lang-modal-wrap">
+    <button class="lang-modal-close" onclick="closeLangModal()" aria-label="Close">
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="1" y1="1" x2="11" y2="11"/><line x1="11" y1="1" x2="1" y2="11"/>
+      </svg>
+    </button>
+    <div class="lang-modal-title">Language Profiles</div>
+    <div class="profile-tabs" id="profileTabs">
+      <button class="profile-tab active" onclick="selectModalProfile(0)">Profile 1</button>
+      <button class="profile-tab" onclick="selectModalProfile(1)">Profile 2</button>
+      <button class="profile-tab" onclick="selectModalProfile(2)">Profile 3</button>
+    </div>
+    <div class="lang-field-row">
+      <div class="lang-field">
+        <div class="lang-field-label">Primary Language</div>
+        <select class="lang-select" id="modal-primary">
+          <option>German</option><option>English</option><option>French</option>
+          <option>Spanish</option><option>Italian</option><option>Portuguese</option>
+          <option>Dutch</option><option>Polish</option><option>Russian</option>
+          <option>Japanese</option><option>Chinese</option><option>Arabic</option>
+          <option>Turkish</option><option>Korean</option><option>Swedish</option>
+        </select>
+      </div>
+      <div class="lang-field">
+        <div class="lang-field-label">Target Language</div>
+        <select class="lang-select" id="modal-target">
+          <option>Bulgarian</option><option>English</option><option>Spanish</option>
+          <option>French</option><option>German</option><option>Italian</option>
+          <option>Portuguese</option><option>Dutch</option><option>Polish</option>
+          <option>Russian</option><option>Japanese</option><option>Chinese</option>
+          <option>Arabic</option><option>Turkish</option><option>Korean</option>
+          <option>Swedish</option>
+        </select>
+      </div>
+    </div>
+    <button class="btn-primary" style="margin-top:8px;" onclick="saveLangModal()">Save</button>
+  </div>
+</div>
+
 <script>
-  // ---- STORAGE ----
-  function getEntries() {
-    try { return JSON.parse(localStorage.getItem('floow_entries') || '[]'); }
-    catch(e) { return []; }
+  // ================================================================
+  // LANGUAGE PROFILES
+  // ================================================================
+  const LANG_OPTIONS = [
+    'German','English','French','Spanish','Italian','Portuguese',
+    'Dutch','Polish','Russian','Japanese','Chinese','Arabic',
+    'Turkish','Korean','Swedish','Bulgarian'
+  ];
+
+  const DEFAULT_PROFILES = [
+    { primary: 'German', target: 'Bulgarian' },
+    { primary: 'German', target: 'English'  },
+    { primary: 'German', target: 'Spanish'  }
+  ];
+
+  function loadProfiles() {
+    try { return JSON.parse(localStorage.getItem('floow_profiles')) || DEFAULT_PROFILES; }
+    catch(e) { return DEFAULT_PROFILES; }
   }
-  function saveEntries(entries) {
-    localStorage.setItem('floow_entries', JSON.stringify(entries));
+  function saveProfiles(p) {
+    localStorage.setItem('floow_profiles', JSON.stringify(p));
+  }
+  function loadCurrentProfile() {
+    const v = parseInt(localStorage.getItem('floow_current_profile') || '0', 10);
+    return (v >= 0 && v <= 2) ? v : 0;
+  }
+  function saveCurrentProfile(idx) {
+    localStorage.setItem('floow_current_profile', String(idx));
   }
 
-  // ---- NAV POSITION ----
+  let profiles       = loadProfiles();
+  let currentProfile = loadCurrentProfile();
+
+  function getProfile() { return profiles[currentProfile]; }
+
+  // ================================================================
+  // STORAGE — per profile
+  // ================================================================
+  function getAllEntries() {
+    try {
+      const raw = JSON.parse(localStorage.getItem('floow_entries_v2') || '{}');
+      return {
+        profile0: raw.profile0 || [],
+        profile1: raw.profile1 || [],
+        profile2: raw.profile2 || []
+      };
+    } catch(e) {
+      return { profile0: [], profile1: [], profile2: [] };
+    }
+  }
+  function saveAllEntries(all) {
+    localStorage.setItem('floow_entries_v2', JSON.stringify(all));
+  }
+  function getEntries() {
+    return getAllEntries()['profile' + currentProfile];
+  }
+  function saveEntries(entries) {
+    const all = getAllEntries();
+    all['profile' + currentProfile] = entries;
+    saveAllEntries(all);
+  }
+
+  // ── Migrate old flat entries (one-time) ──
+  (function migrateLegacy() {
+    if (localStorage.getItem('floow_entries_v2')) return;
+    const old = localStorage.getItem('floow_entries');
+    if (!old) return;
+    try {
+      const arr = JSON.parse(old);
+      if (Array.isArray(arr) && arr.length) {
+        saveEntries(arr); // put in profile0
+      }
+    } catch(e) {}
+  })();
+
+  // ================================================================
+  // NAV POSITION
+  // ================================================================
   function positionNav() {
     const headerCard = document.querySelector('.header-card');
     const nav = document.querySelector('.nav-bar');
@@ -912,18 +1204,22 @@
   window.addEventListener('resize', positionNav);
   window.addEventListener('scroll', positionNav);
 
-  // ---- NAVIGATION ----
+  // ================================================================
+  // NAVIGATION
+  // ================================================================
   function switchView(name) {
     document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
     document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
     document.getElementById('view-' + name).classList.add('active');
     document.getElementById('nav-' + name).classList.add('active');
-    if (name === 'archive')  renderArchive();
-    if (name === 'training') renderTraining();
+    if (name === 'archive')   renderArchive();
+    if (name === 'training')  renderTraining();
     if (name === 'dashboard') updateDashboard();
   }
 
-  // ---- HELPERS ----
+  // ================================================================
+  // HELPERS
+  // ================================================================
   function generateId() {
     return Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
   }
@@ -940,7 +1236,56 @@
     return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
   }
 
-  // ---- SAVE / EDIT ENTRY ----
+  // ================================================================
+  // DYNAMIC LABELS
+  // ================================================================
+  // Sample words for keyword placeholder per language
+  const KW_SAMPLES = {
+    'German':     'Wort1, Wort2, Wort3',
+    'English':    'word1, word2, word3',
+    'French':     'mot1, mot2, mot3',
+    'Spanish':    'palabra1, palabra2',
+    'Italian':    'parola1, parola2',
+    'Portuguese': 'palavra1, palavra2',
+    'Dutch':      'woord1, woord2',
+    'Polish':     'słowo1, słowo2',
+    'Russian':    'слово1, слово2',
+    'Bulgarian':  'дума1, дума2',
+    'Japanese':   '語1, 語2',
+    'Chinese':    '词1, 词2',
+    'Arabic':     'كلمة1, كلمة2',
+    'Turkish':    'kelime1, kelime2',
+    'Korean':     '단어1, 단어2',
+    'Swedish':    'ord1, ord2'
+  };
+
+  function kwSample(lang) {
+    return KW_SAMPLES[lang] || 'word1, word2';
+  }
+
+  function updateLabels() {
+    const p = getProfile();
+    const set = (id, txt) => { const el = document.getElementById(id); if (el) el.textContent = txt; };
+
+    set('label-primary',    p.primary);
+    set('label-target',     p.target);
+    set('label-kw-primary', 'Keywords ' + p.primary);
+    set('label-kw-target',  'Keywords ' + p.target);
+    set('profileIndicator', 'Profile ' + (currentProfile + 1) + ' · ' + p.primary + ' → ' + p.target);
+
+    // Update all placeholders dynamically
+    const setPlaceholder = (id, txt) => { const el = document.getElementById(id); if (el) el.placeholder = txt; };
+    setPlaceholder('input-german',    'Enter ' + p.primary + ' phrase');
+    setPlaceholder('input-bulgarian', 'Enter ' + p.target  + ' translation');
+    setPlaceholder('input-latin',     'Enter Latin / transliteration');
+    setPlaceholder('input-kw-de',     kwSample(p.primary));
+    setPlaceholder('input-kw-bg',     kwSample(p.target));
+    setPlaceholder('input-kw-latin',  'latin1, latin2');
+  }
+
+  // ================================================================
+  // SAVE / EDIT ENTRY
+  // ================================================================
   function saveEntry() {
     const german    = document.getElementById('input-german').value.trim();
     const bulgarian = document.getElementById('input-bulgarian').value.trim();
@@ -951,7 +1296,7 @@
     const editId    = document.getElementById('edit-id').value;
 
     if (!german || !bulgarian) {
-      showNotification('German and Bulgarian are required');
+      showNotification(getProfile().primary + ' and ' + getProfile().target + ' are required');
       return;
     }
 
@@ -1032,7 +1377,9 @@
     }
   }
 
-  // ---- DASHBOARD ----
+  // ================================================================
+  // DASHBOARD
+  // ================================================================
   function updateDashboard() {
     const entries = getEntries();
     document.getElementById('totalCount').textContent = entries.length;
@@ -1049,12 +1396,17 @@
     setProg('prog-solid',  solid);
     setProg('prog-unsure', unsure);
     setProg('prog-weak',   weak);
+    updateLabels();
   }
 
-  // ---- ARCHIVE ----
+  // ================================================================
+  // ARCHIVE
+  // ================================================================
   function renderArchive() {
     const entries = getEntries().slice().reverse();
     const list    = document.getElementById('archiveList');
+    const p       = getProfile();
+
     if (!entries.length) {
       list.innerHTML = '<div class="archive-empty">No entries yet. Start adding phrases from the Dashboard.</div>';
       return;
@@ -1088,24 +1440,16 @@
     }).join('');
   }
 
-  // ---- TRAINING ----
-  // Only one task type: Bulgarian → German (active recall with typed answer)
-  // Session persists until ALL tasks are rated Solid (memoryScore === 2)
-
-  let trainingSession = []; // array of entry ids in this session
+  // ================================================================
+  // TRAINING
+  // ================================================================
+  let trainingSession = [];
   let currentTaskIndex = 0;
 
-  // Build ordered session from all entries (not filtered by nextReview)
-  // Session is NOT cleared on completion — only clears when all are Solid
   function buildSession() {
     const entries = getEntries();
     if (!entries.length) return;
-    // Order: unseen/weak first, then unsure, then solid
-    const sorted = entries.slice().sort((a, b) => {
-      const scoreA = a.memoryScore || 0;
-      const scoreB = b.memoryScore || 0;
-      return scoreA - scoreB; // 0 (Weak) first, 2 (Solid) last
-    });
+    const sorted = entries.slice().sort((a, b) => (a.memoryScore || 0) - (b.memoryScore || 0));
     trainingSession = sorted.map(e => e.id);
     currentTaskIndex = 0;
   }
@@ -1130,7 +1474,6 @@
       return;
     }
 
-    // Build a new session only if none exists or entry count changed
     if (!trainingSession.length || trainingSession.length !== all.length) {
       buildSession();
     }
@@ -1145,9 +1488,7 @@
 
     if (!total) { renderTraining(); return; }
 
-    // Clamp index
     if (currentTaskIndex >= total) {
-      // Round complete — check if truly done
       if (isSessionComplete()) {
         const solid  = entries.filter(e => e.memoryScore === 2).length;
         const unsure = entries.filter(e => e.memoryScore === 1).length;
@@ -1161,24 +1502,14 @@
             <div class="session-complete-title">All Solid! 🎉</div>
             <div class="session-complete-sub">Every phrase has been mastered in this session.</div>
             <div class="session-stats">
-              <div class="session-stat">
-                <div class="session-stat-num solid">${solid}</div>
-                <div class="session-stat-label">Solid</div>
-              </div>
-              <div class="session-stat">
-                <div class="session-stat-num unsure">${unsure}</div>
-                <div class="session-stat-label">Unsure</div>
-              </div>
-              <div class="session-stat">
-                <div class="session-stat-num weak">${weak}</div>
-                <div class="session-stat-label">Weak</div>
-              </div>
+              <div class="session-stat"><div class="session-stat-num solid">${solid}</div><div class="session-stat-label">Solid</div></div>
+              <div class="session-stat"><div class="session-stat-num unsure">${unsure}</div><div class="session-stat-label">Unsure</div></div>
+              <div class="session-stat"><div class="session-stat-num weak">${weak}</div><div class="session-stat-label">Weak</div></div>
             </div>
             <button class="btn-check" onclick="restartSession()">Train Again</button>
           </div>`;
         return;
       }
-      // Not all solid — restart round automatically
       currentTaskIndex = 0;
     }
 
@@ -1186,6 +1517,7 @@
     const entry   = entries.find(e => e.id === entryId);
     if (!entry) { currentTaskIndex++; showTask(); return; }
 
+    const p       = getProfile();
     const current = currentTaskIndex + 1;
     const pct     = Math.round((currentTaskIndex / total) * 100);
 
@@ -1202,7 +1534,7 @@
             class="answer-input"
             id="answerInput"
             type="text"
-            placeholder="Type the German translation…"
+            placeholder="Type the ${escHtml(p.primary)} translation…"
             autocomplete="off"
             autocorrect="off"
             autocapitalize="off"
@@ -1225,7 +1557,6 @@
         </div>
       </div>`;
 
-    // Auto-focus input on desktop
     setTimeout(() => {
       const inp = document.getElementById('answerInput');
       if (inp && window.innerWidth > 600) inp.focus();
@@ -1282,8 +1613,88 @@
     showTask();
   }
 
-  // ---- INIT ----
+  // ================================================================
+  // LANGUAGE MODAL
+  // ================================================================
+  let modalProfile = currentProfile; // which profile is being previewed in modal
+
+  function openLangModal() {
+    modalProfile = currentProfile;
+    renderModalTabs();
+    populateModalFields();
+    document.getElementById('langOverlay').classList.add('open');
+  }
+
+  function closeLangModal() {
+    document.getElementById('langOverlay').classList.remove('open');
+  }
+
+  function closeLangModalIfBg(e) {
+    if (e.target === document.getElementById('langOverlay')) closeLangModal();
+  }
+
+  function renderModalTabs() {
+    const tabs = document.querySelectorAll('.profile-tab');
+    tabs.forEach((t, i) => {
+      t.classList.toggle('active', i === modalProfile);
+    });
+  }
+
+  function selectModalProfile(idx) {
+    modalProfile = idx;
+    renderModalTabs();
+    populateModalFields();
+  }
+
+  function populateModalFields() {
+    const p = profiles[modalProfile];
+    const selPrimary = document.getElementById('modal-primary');
+    const selTarget  = document.getElementById('modal-target');
+    if (!selPrimary || !selTarget) return;
+
+    // Set selected options
+    for (let opt of selPrimary.options) opt.selected = (opt.value === p.primary);
+    for (let opt of selTarget.options)  opt.selected = (opt.value === p.target);
+  }
+
+  function saveLangModal() {
+    const selPrimary = document.getElementById('modal-primary');
+    const selTarget  = document.getElementById('modal-target');
+    if (!selPrimary || !selTarget) return;
+
+    profiles[modalProfile] = {
+      primary: selPrimary.value,
+      target:  selTarget.value
+    };
+    saveProfiles(profiles);
+
+    currentProfile = modalProfile;
+    saveCurrentProfile(currentProfile);
+
+    closeLangModal();
+
+    // Reset training session for new profile
+    trainingSession = [];
+    currentTaskIndex = 0;
+
+    // Re-render active view
+    updateDashboard();
+    updateLabels();
+
+    const activeView = document.querySelector('.view.active');
+    if (activeView) {
+      if (activeView.id === 'view-archive')  renderArchive();
+      if (activeView.id === 'view-training') renderTraining();
+    }
+
+    showNotification('Profile ' + (currentProfile + 1) + ' · ' + getProfile().primary + ' → ' + getProfile().target);
+  }
+
+  // ================================================================
+  // INIT
+  // ================================================================
   updateDashboard();
+  updateLabels();
 </script>
 </body>
 </html>
