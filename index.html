@@ -754,35 +754,51 @@
   .task-animate { animation: taskIn 0.25s ease; }
 
   /* TRAINING BLOB ICON */
-  .training-blob-icon {
-    width: 20px;
-    height: 20px;
-    transform-origin: center;
-    animation: ringPulse 3s ease-in-out infinite;
-    filter: drop-shadow(0 0 2px rgba(255,255,255,0.18));
-    overflow: visible;
-  }
+ .training-icon-wrapper {
+  position: relative;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
-  .training-blob-icon circle {
-    transform-origin: center;
-  }
+.training-blob-icon {
+  position: relative;
+  z-index: 2;
+}
 
-  @keyframes ringPulse {
-    0%   { transform: scale(1);    filter: drop-shadow(0 0 1.5px rgba(255,255,255,0.15)); }
-    50%  { transform: scale(1.08); filter: drop-shadow(0 0 4px   rgba(255,255,255,0.32)); }
-    100% { transform: scale(1);    filter: drop-shadow(0 0 1.5px rgba(255,255,255,0.15)); }
-  }
+.pulse-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 18px;
+  height: 18px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.25);
+  opacity: 0.3;
+  animation: pulseRing 3.2s ease-in-out infinite;
+}
 
-  #nav-training.active .training-blob-icon {
-    animation: ringPulseActive 3s ease-in-out infinite;
+@keyframes pulseRing {
+  0% {
+    transform: translate(-50%, -50%) scale(0.9);
+    opacity: 0.2;
   }
-
-  @keyframes ringPulseActive {
-    0%   { transform: scale(1.06); filter: drop-shadow(0 0 3px rgba(255,255,255,0.4)); }
-    50%  { transform: scale(1.14); filter: drop-shadow(0 0 7px rgba(255,255,255,0.6)); }
-    100% { transform: scale(1.06); filter: drop-shadow(0 0 3px rgba(255,255,255,0.4)); }
+  50% {
+    transform: translate(-50%, -50%) scale(1.25);
+    opacity: 0.5;
   }
-
+  100% {
+    transform: translate(-50%, -50%) scale(0.9);
+    opacity: 0.2;
+  }
+ #nav-training.active .pulse-ring {
+  animation-duration: 2.4s;
+  opacity: 0.6;
+}
+ 
   /* LANGUAGE MODAL OVERLAY */
   .lang-overlay {
     display: none;
@@ -976,9 +992,12 @@
     </svg>
   </button>
   <button class="nav-btn" id="nav-training" onclick="switchView('training')">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" class="training-blob-icon" overflow="visible">
-      <ellipse cx="12" cy="12" rx="6.6" ry="6.4" transform="rotate(-6 12 12)"/>
-    </svg>
+<div class="training-icon-wrapper">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" class="training-blob-icon" overflow="visible">
+    <ellipse cx="12" cy="12" rx="6.6" ry="6.4" transform="rotate(-6 12 12)"/>
+  </svg>
+  <div class="pulse-ring"></div>
+</div>
   </button>
 </nav>
 
@@ -1095,6 +1114,7 @@
           <option>Dutch</option><option>Polish</option><option>Russian</option>
           <option>Japanese</option><option>Chinese</option><option>Arabic</option>
           <option>Turkish</option><option>Korean</option><option>Swedish</option>
+          <option>Finnish</option>
         </select>
       </div>
       <div class="lang-field">
@@ -1105,7 +1125,7 @@
           <option>Portuguese</option><option>Dutch</option><option>Polish</option>
           <option>Russian</option><option>Japanese</option><option>Chinese</option>
           <option>Arabic</option><option>Turkish</option><option>Korean</option>
-          <option>Swedish</option>
+          <option>Swedish</option><option>Finnish</option>
         </select>
       </div>
     </div>
@@ -1256,7 +1276,8 @@
     'Arabic':     'كلمة1, كلمة2',
     'Turkish':    'kelime1, kelime2',
     'Korean':     '단어1, 단어2',
-    'Swedish':    'ord1, ord2'
+    'Swedish':    'ord1, ord2',
+    'Finnish':    'sana1, sana2'
   };
 
   function kwSample(lang) {
@@ -1325,6 +1346,10 @@
         id: generateId(),
         german, bulgarian, latin, keywords,
         memoryScore: 0,
+        level: 'weak',
+        correctStreak: 0,
+        totalCorrect: 0,
+        lastReviewed: null,
         createdAt: Date.now(),
         nextReview: Date.now()
       };
@@ -1380,13 +1405,17 @@
   // ================================================================
   // DASHBOARD
   // ================================================================
+  function getLevel(e) {
+    return e.level || (e.memoryScore === 2 ? 'solid' : e.memoryScore === 1 ? 'unsure' : 'weak');
+  }
+
   function updateDashboard() {
     const entries = getEntries();
     document.getElementById('totalCount').textContent = entries.length;
     const total  = entries.length || 1;
-    const solid  = entries.filter(e => e.memoryScore === 2).length;
-    const unsure = entries.filter(e => e.memoryScore === 1).length;
-    const weak   = entries.filter(e => e.memoryScore === 0).length;
+    const solid  = entries.filter(e => getLevel(e) === 'solid').length;
+    const unsure = entries.filter(e => getLevel(e) === 'unsure').length;
+    const weak   = entries.filter(e => getLevel(e) === 'weak').length;
     function setProg(id, count) {
       const pct = Math.round((count / total) * 100);
       const el  = document.getElementById(id);
@@ -1430,7 +1459,7 @@
           ${kwHtml}
           <div class="archive-meta">
             <div class="archive-date">${formatDate(e.createdAt)}</div>
-            <div class="memory-badge score-${e.memoryScore}">${scoreLabels[e.memoryScore]}</div>
+            <div class="memory-badge score-${getLevel(e) === 'solid' ? 2 : getLevel(e) === 'unsure' ? 1 : 0}">${getLevel(e).charAt(0).toUpperCase() + getLevel(e).slice(1)}</div>
           </div>
           <div class="archive-actions">
             <button class="archive-btn edit-btn" onclick="loadEntryForEdit('${escHtml(e.id)}')">Edit</button>
@@ -1443,21 +1472,86 @@
   // ================================================================
   // TRAINING
   // ================================================================
-  let trainingSession = [];
+  let trainingSession = []; // array of entry ids, weighted-random ordered
   let currentTaskIndex = 0;
 
+  // ── Weighted random pick (does not exclude any level) ──────────────────────
+  function weightedPick(entries) {
+    if (!entries.length) return null;
+    const weights = entries.map(e => {
+      const lv = getLevel(e);
+      return lv === 'solid' ? 10 : lv === 'unsure' ? 30 : 60;
+    });
+    const total = weights.reduce((a, b) => a + b, 0);
+    let r = Math.random() * total;
+    for (let i = 0; i < entries.length; i++) {
+      r -= weights[i];
+      if (r <= 0) return entries[i];
+    }
+    return entries[entries.length - 1];
+  }
+
+  // ── Build a weighted-random session of N tasks ────────────────────────────
   function buildSession() {
     const entries = getEntries();
     if (!entries.length) return;
-    const sorted = entries.slice().sort((a, b) => (a.memoryScore || 0) - (b.memoryScore || 0));
-    trainingSession = sorted.map(e => e.id);
+    // Build a session: 1 task per entry but ordered by weighted random
+    const pool = entries.slice();
+    const ordered = [];
+    while (pool.length) {
+      const pick = weightedPick(pool);
+      ordered.push(pick.id);
+      pool.splice(pool.findIndex(e => e.id === pick.id), 1);
+    }
+    trainingSession = ordered;
     currentTaskIndex = 0;
   }
 
   function isSessionComplete() {
     const entries = getEntries();
-    const sessionEntries = trainingSession.map(id => entries.find(e => e.id === id)).filter(Boolean);
-    return sessionEntries.length > 0 && sessionEntries.every(e => e.memoryScore === 2);
+    return entries.length > 0 && entries.every(e => getLevel(e) === 'solid');
+  }
+
+  // ── Update entry after correct / wrong ─────────────────────────────────────
+  function applyResult(entryId, isCorrect) {
+    const entries = getEntries();
+    const idx = entries.findIndex(e => e.id === entryId);
+    if (idx === -1) return;
+    const e = entries[idx];
+
+    // ensure fields exist (legacy entries)
+    if (!e.level)         e.level = getLevel(e);
+    if (!e.correctStreak) e.correctStreak = 0;
+    if (!e.totalCorrect)  e.totalCorrect  = 0;
+
+    e.lastReviewed = Date.now();
+
+    if (isCorrect) {
+      e.correctStreak++;
+      e.totalCorrect++;
+      // Level up logic
+      if (e.level === 'weak' && e.correctStreak >= 3) {
+        e.level = 'unsure';
+        e.memoryScore = 1;
+      } else if (e.level === 'unsure' && e.correctStreak >= 5 && e.totalCorrect >= 8) {
+        e.level = 'solid';
+        e.memoryScore = 2;
+      }
+    } else {
+      e.correctStreak = 0;
+      // Downgrade
+      if (e.level === 'solid') {
+        e.level = 'unsure';
+        e.memoryScore = 1;
+      } else if (e.level === 'unsure') {
+        e.level = 'weak';
+        e.memoryScore = 0;
+      }
+      // weak stays weak
+    }
+
+    entries[idx] = e;
+    saveEntries(entries);
   }
 
   function renderTraining() {
@@ -1474,6 +1568,7 @@
       return;
     }
 
+    // Rebuild session when entry count changes or session is empty
     if (!trainingSession.length || trainingSession.length !== all.length) {
       buildSession();
     }
@@ -1490,9 +1585,9 @@
 
     if (currentTaskIndex >= total) {
       if (isSessionComplete()) {
-        const solid  = entries.filter(e => e.memoryScore === 2).length;
-        const unsure = entries.filter(e => e.memoryScore === 1).length;
-        const weak   = entries.filter(e => e.memoryScore === 0).length;
+        const solid  = entries.filter(e => getLevel(e) === 'solid').length;
+        const unsure = entries.filter(e => getLevel(e) === 'unsure').length;
+        const weak   = entries.filter(e => getLevel(e) === 'weak').length;
         container.innerHTML = `
           <p class="section-title">Training — Session Complete</p>
           <div class="training-progress-bar">
@@ -1500,7 +1595,7 @@
           </div>
           <div class="session-complete task-animate">
             <div class="session-complete-title">All Solid! 🎉</div>
-            <div class="session-complete-sub">Every phrase has been mastered in this session.</div>
+            <div class="session-complete-sub">Every phrase is mastered. Keep the streak going.</div>
             <div class="session-stats">
               <div class="session-stat"><div class="session-stat-num solid">${solid}</div><div class="session-stat-label">Solid</div></div>
               <div class="session-stat"><div class="session-stat-num unsure">${unsure}</div><div class="session-stat-label">Unsure</div></div>
@@ -1510,7 +1605,8 @@
           </div>`;
         return;
       }
-      currentTaskIndex = 0;
+      // Not all solid — restart with fresh weighted order
+      buildSession();
     }
 
     const entryId = trainingSession[currentTaskIndex];
@@ -1520,6 +1616,8 @@
     const p       = getProfile();
     const current = currentTaskIndex + 1;
     const pct     = Math.round((currentTaskIndex / total) * 100);
+    const lvl     = getLevel(entry);
+    const streak  = entry.correctStreak || 0;
 
     container.innerHTML = `
       <p class="section-title">Training &mdash; ${current} / ${total}</p>
@@ -1550,9 +1648,7 @@
           <div class="reveal-bg">${escHtml(entry.bulgarian)}</div>
           ${entry.latin ? `<div class="reveal-latin">${escHtml(entry.latin)}</div>` : ''}
           <div class="rating-row">
-            <button class="rating-btn weak"   onclick="rateTask('${escHtml(entryId)}', 0)">Weak</button>
-            <button class="rating-btn unsure"  onclick="rateTask('${escHtml(entryId)}', 1)">Unsure</button>
-            <button class="rating-btn solid"   onclick="rateTask('${escHtml(entryId)}', 2)">Solid</button>
+            <button class="rating-btn solid" onclick="advanceTask()">Next →</button>
           </div>
         </div>
       </div>`;
@@ -1580,30 +1676,23 @@
     inp.disabled = true;
     btn.style.display = 'none';
 
+    applyResult(entryId, isCorrect);
+    updateDashboard();
+
     if (isCorrect) {
       inp.classList.add('correct');
       res.textContent = '✓ Correct!';
       res.className   = 'check-result correct';
     } else {
       inp.classList.add('wrong');
-      res.textContent = '✗ Not quite';
+      res.textContent = '✗ Not quite — see the answer below';
       res.className   = 'check-result wrong';
     }
 
     rev.classList.add('visible');
   }
 
-  function rateTask(entryId, score) {
-    const entries = getEntries();
-    const idx     = entries.findIndex(e => e.id === entryId);
-    if (idx !== -1) {
-      const day = 86400000;
-      const intervals = [1 * day, 3 * day, 7 * day];
-      entries[idx].memoryScore = score;
-      entries[idx].nextReview  = Date.now() + intervals[score];
-      saveEntries(entries);
-    }
-    updateDashboard();
+  function advanceTask() {
     currentTaskIndex++;
     showTask();
   }
