@@ -772,31 +772,40 @@
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 18px;
-  height: 18px;
+  width: 22px;
+  height: 22px;
   transform: translate(-50%, -50%);
   border-radius: 50%;
-  border: 1px solid rgba(255,255,255,0.25);
-  opacity: 0.3;
-  animation: pulseRing 3.2s ease-in-out infinite;
+  background: rgba(255,255,255,0.08);
+  box-shadow: 
+    0 0 6px rgba(255,255,255,0.25),
+    0 0 12px rgba(255,255,255,0.18);
+  opacity: 0.6;
+  animation: pulseGlow 2.8s ease-in-out infinite;
 }
 
-@keyframes pulseRing {
+@keyframes pulseGlow {
   0% {
-    transform: translate(-50%, -50%) scale(0.9);
-    opacity: 0.2;
+    transform: translate(-50%, -50%) scale(0.85);
+    opacity: 0.4;
+    box-shadow: 
+      0 0 4px rgba(255,255,255,0.2),
+      0 0 8px rgba(255,255,255,0.15);
   }
   50% {
     transform: translate(-50%, -50%) scale(1.25);
-    opacity: 0.5;
+    opacity: 0.8;
+    box-shadow: 
+      0 0 10px rgba(255,255,255,0.35),
+      0 0 18px rgba(255,255,255,0.25);
   }
   100% {
-    transform: translate(-50%, -50%) scale(0.9);
-    opacity: 0.2;
+    transform: translate(-50%, -50%) scale(0.85);
+    opacity: 0.4;
+    box-shadow: 
+      0 0 4px rgba(255,255,255,0.2),
+      0 0 8px rgba(255,255,255,0.15);
   }
- #nav-training.active .pulse-ring {
-  animation-duration: 2.4s;
-  opacity: 0.6;
 }
  
   /* LANGUAGE MODAL OVERLAY */
@@ -1092,7 +1101,7 @@
 </div><!-- /viewsWrapper -->
 
 <!-- LANGUAGE MODAL -->
-<div class="lang-overlay" id="langOverlay" onclick="closeLangModalIfBg(event)">
+<div class="lang-overlay" id="langOverlay" onclick="closeLanguageModal()">
   <div class="lang-modal lang-modal-wrap">
     <button class="lang-modal-close" onclick="closeLangModal()" aria-label="Close">
       <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
